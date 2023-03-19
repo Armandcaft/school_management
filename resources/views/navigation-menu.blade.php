@@ -17,8 +17,12 @@
                     </x-nav-link>
 
                     @can ('manage-users') {{-- This is a Gate defined in the app/providers/authprovider --}}
-                    <x-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.index')">
+                    {{-- <x-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.index')"> --}}
+                    <x-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.*')">
                         {{ __('Manage Users') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('admin.tasks.index') }}" :active="request()->routeIs('admin.tasks.*')">
+                        {{ __('Tasks') }}
                     </x-nav-link>
                     @endcan
 

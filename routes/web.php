@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\TaskController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Students\LessonController;
@@ -40,6 +41,7 @@ Route::group(['middleware' => 'auth'], function() {
     });
     Route::group(['middleware' => 'role:admin', 'prefix' => 'admin', 'as' => 'admin.'], function() {
         Route::resource('users', UserController::class);
+        Route::resource('tasks', TaskController::class);
     });
 });
 
