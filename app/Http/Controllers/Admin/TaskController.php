@@ -8,6 +8,8 @@ use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaskController extends Controller
 {
@@ -16,6 +18,8 @@ class TaskController extends Controller
      */
     public function index()
     {
+        abort_if(Gate::denies('task_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $tasks = Task::all();
 
         return view('admin.tasks.index', compact('tasks'));
@@ -26,7 +30,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        // abort_if(Gate::denies('task_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('task_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('admin.tasks.create');
     }
@@ -36,6 +40,8 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+        abort_if(Gate::denies('task_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $request->validate([
             'title' => 'bail|string|required|unique:tasks|max:255',
             'description' => 'string|required',
@@ -51,7 +57,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        // abort_if(Gate::denies('task_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('task_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('admin.tasks.show', compact('task'));
     }
@@ -61,7 +67,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        // abort_if(Gate::denies('task_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('task_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('admin.tasks.edit', compact('task'));
     }
@@ -71,6 +77,8 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
+        abort_if(Gate::denies('task_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $task->update($request->all());
 
         return redirect()->route('admin.tasks.index')->with('success', 'Task updated successfully!');
@@ -81,7 +89,7 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        // abort_if(Gate::denies('task_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('task_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $task->delete();
 
